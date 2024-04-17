@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mvvm/res/colors.dart';
 import 'package:mvvm/res/components/round_button.dart';
 import 'package:mvvm/utils/utils.dart';
+import 'package:mvvm/view_model/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -36,6 +38,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
+
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Login"),
@@ -102,6 +106,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 RoundButton(
                   title: 'Login',
+                  loading: authViewModel.loading,
                   onPressed: () {
                     String? emailError =
                         Utils.validateEmail!(_emailController.text);
@@ -114,6 +119,11 @@ class _LoginViewState extends State<LoginView> {
                       Utils.flushBarErrorMessage(
                           "Paswword should be at least 6 digits", context);
                     } else {
+                      Map data = {
+                        "email": _emailController.text.toString(),
+                        "password": _passwordController.text.toString(),
+                      };
+                      authViewModel.loginAPI(data, context);
                       print("API Hits");
                     }
                   },

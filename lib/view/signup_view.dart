@@ -7,14 +7,14 @@ import 'package:mvvm/utils/utils.dart';
 import 'package:mvvm/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _SignUpViewState extends State<SignUpView> {
   final ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
 
   final TextEditingController _emailController = TextEditingController();
@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Login"),
+          title: const Text("Sign Up"),
           centerTitle: true,
           backgroundColor: AppColors.blueColor,
           titleTextStyle: const TextStyle(
@@ -106,8 +106,8 @@ class _LoginViewState extends State<LoginView> {
                   height: height * .05,
                 ),
                 RoundButton(
-                  title: 'Login',
-                  loading: authViewModel.loading,
+                  title: 'Sign Up',
+                  loading: authViewModel.signUpLoading,
                   onPressed: () {
                     String? emailError =
                         Utils.validateEmail!(_emailController.text);
@@ -124,7 +124,7 @@ class _LoginViewState extends State<LoginView> {
                         "email": _emailController.text.toString(),
                         "password": _passwordController.text.toString(),
                       };
-                      authViewModel.loginAPI(data, context);
+                      authViewModel.signUpAPI(data, context);
                       if (kDebugMode) {
                         print("API Hits");
                       }
@@ -138,16 +138,16 @@ class _LoginViewState extends State<LoginView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account?"),
+                    const Text("Already have an account?"),
                     const SizedBox(
                       width: 4,
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, RoutesName.signup);
+                        Navigator.pushNamed(context, RoutesName.login);
                       },
                       child: const Text(
-                        "Sign Up",
+                        "Login",
                         style: TextStyle(
                           color: AppColors.greenColor,
                         ),
